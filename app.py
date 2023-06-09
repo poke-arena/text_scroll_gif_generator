@@ -35,17 +35,8 @@ def remove_background():
 
     from PIL import Image
 
-    image_url = request.args.get('url')
+    image = request.args.get('image')
 
-    if not image_url:
-        return jsonify({'error': 'No image URL provided'})
-
-    try:
-        response = requests.get(image_url)
-        response.raise_for_status()
-        image = response.content
-    except Exception as e:
-        return jsonify({'error': str(e)})
 
     try:
         output = rembg.remove(image)
