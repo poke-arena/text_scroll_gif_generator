@@ -35,8 +35,9 @@ def remove_background():
 
     from PIL import Image
 
-    image = request.args.get('image')
-
+    
+    image_url = request.args.get('image')
+    image = requests.get(f"https://{image_url}").content
 
     try:
         output = rembg.remove(image)
