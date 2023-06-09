@@ -19,7 +19,7 @@ def home():
        
         
         
-@app.route('/remove-background', methods=['GET'])
+@app.route('/remove-background', methods=['POST'])
 def remove_background():
     try:
         import rembg
