@@ -1,0 +1,64 @@
+
+
+from flask import Flask, request, jsonify
+import requests
+import io
+import importlib
+
+app = Flask(__name__)
+
+def install_package(package):
+    try:
+        importlib.import_module(package)
+    except ImportError:
+        import subprocess
+        subprocess.call(['pip', 'install', package])
+
+@app.route('/remove-background', methods=['GET'])
+def remove_background():
+    try:
+        import rembg
+    except ImportError:
+        install_package('rembg')
+        import rembg
+
+    try:
+        import PIL
+    except ImportError:
+        install_package('Pillow')
+        import PIL
+
+    from PIL import Image
+
+    image_url = request.args.get('url')
+
+    if not image_url:
+        return jsonify({'error': 'No image URL provided'})
+
+    try:
+        response = requests.get(image_url)
+        response.raise_for_status()
+        image = response.content
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+    try:
+        output = rembg.remove(image)
+        output_image = Image.open(io.BytesIO(output))
+        cropped_image = output_image.crop(output_image.getbbox())  # Crop to the maximum extent
+        cropped_image_bytes = io.BytesIO()
+        cropped_image.save(cropped_image_bytes, format='PNG')
+        cropped_image_bytes.seek(0)
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+    return jsonify({'result': cropped_image_bytes.getvalue()})
+
+if __name__ == '__main__':
+    try:
+        import flask
+    except ImportError:
+        install_package('flask')
+        import flask
+
+    app.run()
