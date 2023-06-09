@@ -1,6 +1,4 @@
-
-
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import requests
 import io
 import importlib
@@ -14,6 +12,13 @@ def install_package(package):
         import subprocess
         subprocess.call(['pip', 'install', package])
 
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+       
+        
+        
 @app.route('/remove-background', methods=['GET'])
 def remove_background():
     try:
