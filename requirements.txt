@@ -3,3 +3,4 @@ FastAPI
 pillow
 rembg
 uvicorn
+urllib3==1.26.7
