@@ -1,4 +1,5 @@
+aiohttp
 FastAPI
-uvicorn
+pillow
 rembg
-Pillow
+uvicorn
