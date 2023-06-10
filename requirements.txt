@@ -1,4 +1,4 @@
 FastAPI
-unicorn
+uvicorn
 rembg
 Pillow
