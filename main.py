@@ -7,6 +7,8 @@ from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 
+session = aiohttp.ClientSession()
+
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
@@ -18,8 +20,6 @@ async def home(request: Request):
 
 @app.post("/remove-background-url")
 async def remove_background_url(image_url: str):
-  async with aiohttp.ClientSession() as session:
-
     async with session.get(image_url) as response:
 
         image = await response.read()
