@@ -18,7 +18,7 @@ async def home(request: Request):
 
 
 
-@app.post("/remove-background-url")
+@app.get("/remove-background-url")
 async def remove_background_url(image_url: str):
     async with session.get(image_url) as response:
 
