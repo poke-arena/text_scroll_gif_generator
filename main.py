@@ -18,17 +18,17 @@ app.clientsession = None
 
 async def img(url):
    if app.clientsession is None:
-       async with aiohttp.ClientSession() as new_session:
+       with aiohttp.ClientSession() as new_session:
            app.clientsession = new_session
    async with app.clientsession.get(f"https://cdn.discordapp.com/attachments/{url}") as resp_:
        resp = await resp_.read()
        return Image.open(BytesIO(resp))
 
 
-@app.on_event("shutdown")
-async def on_shutdown():
-   try: await app.clientsession.close()
-   except: pass
+#@app.on_event("shutdown")
+#async def on_shutdown():
+  # try: await app.clientsession.close()
+  # except: pass
 
 
 @app.get("/text_to_gif")
