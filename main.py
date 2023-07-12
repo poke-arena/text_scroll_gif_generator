@@ -14,14 +14,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-session = aiohttp.ClientSession()
+session = None
 
 async def img(url):
+   if session is None:
+       async with aiohtto.ClientSession() as new_session:
+           session = new_session
    async with session.get(f"https://cdn.discordapp.com/attachments/{url}") as resp_:
        resp = await resp_.read()
        return Image.open(BytesIO(resp))
 
-@app_on_event("shutdown")
+@app.on_event("shutdown")
 async def on_shutdown():
    await session.close()
    
