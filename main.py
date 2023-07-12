@@ -14,20 +14,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-session = None
+app.clientsession = None
 
 async def img(url):
-   if session is None:
+   if app.clientsession is None:
        async with aiohtto.ClientSession() as new_session:
-           session = new_session
-   async with session.get(f"https://cdn.discordapp.com/attachments/{url}") as resp_:
+           app.clientsession = new_session
+   async with app.clientsession.get(f"https://cdn.discordapp.com/attachments/{url}") as resp_:
        resp = await resp_.read()
        return Image.open(BytesIO(resp))
 
+
 @app.on_event("shutdown")
 async def on_shutdown():
-   await session.close()
-   
+   try: await app.clientsession.close()
+   except: pass
+
+
 @app.get("/text_to_gif")
 async def text_to_gif(text: str, theme: str="dark"):
     if theme.lower() == "light":
@@ -36,13 +39,16 @@ async def text_to_gif(text: str, theme: str="dark"):
     else:
         announce_mask = await img("1043603765212749944/1128681074743058452/Untitled186_20230712190358.png")
         announce_bg = await img("1043603765212749944/1128681074290081882/Untitled186_20230712190350.png")
+        
     image_width = ann_bg.size[0]
     scroll_speed = 2
     font = ImageFont.truetype("RobotoCondensed-Regular.ttf", 30)
     text_width, text_height = font.getsize(text)
     image_height = ann_bg.size[1]
     num_frames = max(50, int(text_width + image_width / scroll_speed))
+    
     frames = []
+    
     for frame in range(num_frames):
         image = ann_bg.copy()
         draw = ImageDraw.Draw(image)
