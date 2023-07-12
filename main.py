@@ -3,6 +3,7 @@ import io, aiohttp
 from PIL import Image, ImageDraw, ImageFont
 
 from fastapi import FastAPI, Request
+from starlette.responses import StreamingResponse
 
 app = FastAPI()
 
@@ -40,9 +41,9 @@ async def text_to_gif(text: str, theme: str="dark"):
         agf = ann_mask.copy()
         image.paste(agf, (0,0), mask=agf.convert("RGBA"))
     scroll_gif = BytesIO()
-    frames[0].save(scroll_gif, format="GIF", append_images=frames[1:], save_all=True, duration=50, loop=0)
+    frames[0].save(scroll_gif, format="GIF", append_images=frames[1:], save_all=True, duration=38, loop=0)
 
     scroll_gif.seek(0)
-    
-    return {'result': scroll_gif.getvalue()}
+    return StreamingResponse(scroll_gif, media_type="image/gif")  
+    #return {'result': scroll_gif.getvalue()}
     
