@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.responses import StreamingResponse
+from starlette.responses import FileResponse#StreamingResponse
 
 app = FastAPI()
 app.add_middleware(
@@ -30,9 +30,11 @@ async def text_to_gif(text: str, theme: str="dark"):
     if theme.lower() == "light":
         announce_bg = await img("1043603765212749944/1128685099584589834/Untitled186_20230712192107.png")
         announce_mask = await img("1043603765212749944/1128685099311955988/Untitled186_20230712192116.png")
+        text_color = "#37383A"
     else:
         announce_mask = await img("1043603765212749944/1128681074743058452/Untitled186_20230712190358.png")
         announce_bg = await img("1043603765212749944/1128681074290081882/Untitled186_20230712190350.png")
+        text_color = "#FFFFFF"
         
     image_width, image_height = announce_bg.size
     scroll_speed = 2
@@ -46,7 +48,7 @@ async def text_to_gif(text: str, theme: str="dark"):
         image = announce_bg.copy()
         draw = ImageDraw.Draw(image)
         offset = image_width - (frame * scroll_speed)
-        draw.text((offset, 3), text, font=font, fill="#FFFFFF")
+        draw.text((offset, 3), text, font=font, fill=text_color)
         frames.append(image)
         if offset <= (-1*text_width):
             break
@@ -56,6 +58,8 @@ async def text_to_gif(text: str, theme: str="dark"):
     frames[0].save(scroll_gif, format="GIF", append_images=frames[1:], save_all=True, duration=38, loop=0)
 
     scroll_gif.seek(0)
-    return StreamingResponse(scroll_gif, media_type="image/gif")  
+    return FileResponse(scroll_gif, media_type="image/gif")
+    
+    #return StreamingResponse(scroll_gif, media_type="image/gif")  
     #return {'result': scroll_gif.getvalue()}
     
