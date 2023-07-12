@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-#from starlette.responses import FileResponse, StreamingResponse
+from starlette.responses import FileResponse, StreamingResponse
 
 app = FastAPI()
 app.add_middleware(
