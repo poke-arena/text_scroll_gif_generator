@@ -58,7 +58,7 @@ async def text_to_gif(text: str, theme: str="dark"):
     frames[0].save(scroll_gif, format="GIF", append_images=frames[1:], save_all=True, duration=38, loop=0)
 
     scroll_gif.seek(0)
-    return FileResponse(scroll_gif, media_type="image/gif")
+    return FileResponse(scroll_gif.getvalue(), media_type="image/gif")
     
     #return StreamingResponse(scroll_gif, media_type="image/gif")  
     #return {'result': scroll_gif.getvalue()}
