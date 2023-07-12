@@ -21,7 +21,7 @@ async def img(url):
        app.clientsession = aiohttp.ClientSession()
    async with app.clientsession.get(f"https://cdn.discordapp.com/attachments/{url}") as resp_:
        resp = await resp_.read()
-       return Image.open(BytesIO(resp))
+       return Image.open(io.BytesIO(resp))
 
 
 #@app.on_event("shutdown")
