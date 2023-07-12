@@ -3,6 +3,7 @@ import io, aiohttp
 from PIL import Image, ImageDraw, ImageFont
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import StreamingResponse
 
 app = FastAPI()
