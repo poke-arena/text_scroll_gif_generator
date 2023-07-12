@@ -64,6 +64,6 @@ async def text_to_gif(text: str, theme: str="dark"):
         #tmp.seek(0)
         #return FileResponse(tmp.name, media_type="image/gif")
     
-    #return StreamingResponse(scroll_gif, media_type="image/gif")  
-    return {'result': scroll_gif.getvalue()}
+    return StreamingResponse(scroll_gif, media_type="image/gif")  
+    #return {'result': scroll_gif.getvalue()}
     
