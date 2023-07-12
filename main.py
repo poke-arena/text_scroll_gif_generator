@@ -1,10 +1,11 @@
-import io, aiohttp, tempfile
+import io, aiohttp
+#import tempfile
 
 from PIL import Image, ImageDraw, ImageFont
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.responses import FileResponse#StreamingResponse
+#from starlette.responses import FileResponse, StreamingResponse
 
 app = FastAPI()
 app.add_middleware(
@@ -58,11 +59,11 @@ async def text_to_gif(text: str, theme: str="dark"):
     frames[0].save(scroll_gif, format="GIF", append_images=frames[1:], save_all=True, duration=38, loop=0)
 
     scroll_gif.seek(0)
-    with tempfile.NamedTemporaryFile(suffix=".gif", delete=False) as tmp:
-        tmp.write(scroll_gif.getvalue())
-        tmp.seek(0)
-        return FileResponse(tmp.name, media_type="image/gif")
+    #with tempfile.NamedTemporaryFile(suffix=".gif", delete=False) as tmp:
+        #tmp.write(scroll_gif.getvalue())
+        #tmp.seek(0)
+        #return FileResponse(tmp.name, media_type="image/gif")
     
     #return StreamingResponse(scroll_gif, media_type="image/gif")  
-    #return {'result': scroll_gif.getvalue()}
+    return {'result': scroll_gif.getvalue()}
     
