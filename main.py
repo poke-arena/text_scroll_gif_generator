@@ -40,7 +40,7 @@ async def text_to_gif(text: str, theme: str="dark", custom_text_color="#000000",
     elif theme.lower() == "custom":
         announce_mask = await img("https://cdn.discordapp.com/attachments/1043603765212749944/1128681074743058452/Untitled186_20230712190358.png")
         announce_bg = await img("https://cdn.discordapp.com/attachments/1043603765212749944/1128681074290081882/Untitled186_20230712190350.png")
-        new_mask = Image.new((announce_bg.size[0], announce_bg.size[1]), body_color)
+        new_mask = Image.new("RGBA", (announce_bg.size[0], announce_bg.size[1]), body_color)
         text_color = custom_text_color
         announce_mask.paste(new_mask, mask=new_mask)
         announce_bg.paste(new_mask, mask=new_mask)
