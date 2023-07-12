@@ -6,6 +6,12 @@ from fastapi import FastAPI, Request
 from starlette.responses import StreamingResponse
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 session = aiohttp.ClientSession()
 
@@ -14,7 +20,10 @@ async def img(url):
        resp = await resp_.read()
        return Image.open(BytesIO(resp))
 
-
+@app_on_event("shutdown")
+async def on_shutdown():
+   await session.close()
+   
 @app.get("/text_to_gif")
 async def text_to_gif(text: str, theme: str="dark"):
     if theme.lower() == "light":
