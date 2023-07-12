@@ -40,7 +40,7 @@ async def text_to_gif(text: str, theme: str="dark"):
             break
         agf = ann_mask.copy()
         image.paste(agf, (0,0), mask=agf.convert("RGBA"))
-    scroll_gif = BytesIO()
+    scroll_gif = io.BytesIO()
     frames[0].save(scroll_gif, format="GIF", append_images=frames[1:], save_all=True, duration=38, loop=0)
 
     scroll_gif.seek(0)
