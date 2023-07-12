@@ -18,8 +18,7 @@ app.clientsession = None
 
 async def img(url):
    if app.clientsession is None:
-       with aiohttp.ClientSession() as new_session:
-           app.clientsession = new_session
+       app.clientsession = aiohttp.ClientSession()
    async with app.clientsession.get(f"https://cdn.discordapp.com/attachments/{url}") as resp_:
        resp = await resp_.read()
        return Image.open(BytesIO(resp))
