@@ -1,4 +1,4 @@
-import io, rembg, aiohttp
+import io, aiohttp
 
 from PIL import Image
 
