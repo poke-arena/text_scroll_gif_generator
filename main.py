@@ -28,7 +28,7 @@ async def img(url: str):
 
 
 @app.get("/text_to_gif")
-async def text_to_gif(text: str, theme: str="dark", custom_text_color="#000000", body_color="#FFFFFF", custom_icon=None):
+async def text_to_gif(text: str, theme: str="dark", custom_text_color="#FFFFFF", body_color="#000000", custom_icon=None):
     if theme.lower() == "light":
         announce_bg = (await img("https://cdn.discordapp.com/attachments/1043603765212749944/1128685099584589834/Untitled186_20230712192107.png")).copy()
         announce_mask = (await img("https://cdn.discordapp.com/attachments/1043603765212749944/1128685099311955988/Untitled186_20230712192116.png")).copy()
